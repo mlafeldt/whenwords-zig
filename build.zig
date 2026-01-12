@@ -4,6 +4,10 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
+    _ = b.addModule("whenwords", .{
+        .root_source_file = b.path("whenwords.zig"),
+    });
+
     const test_module = b.createModule(.{
         .root_source_file = b.path("whenwords_test.zig"),
         .target = target,

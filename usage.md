@@ -4,13 +4,38 @@ Human-friendly time formatting and parsing.
 
 ## Installation
 
-Copy `whenwords.zig` into your project and import it with `@import("whenwords.zig")`.
+Add it as a Zig package dependency, then import it as `@import("whenwords")`.
+
+1) Fetch the package:
+
+```sh
+zig fetch --save git+https://github.com/mlafeldt/whenwords-zig#main
+```
+
+2) In your `build.zig`, wire the module into your root module:
+
+```zig
+const whenwords_dep = b.dependency("whenwords", .{
+    .target = target,
+    .optimize = optimize,
+});
+
+const exe = b.addExecutable(.{
+    .name = "your-app",
+    .root_module = b.createModule(.{
+        .root_source_file = b.path("src/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    }),
+});
+exe.root_module.addImport("whenwords", whenwords_dep.module("whenwords"));
+```
 
 ## Quick start
 
 ```zig
 const std = @import("std");
-const whenwords = @import("whenwords.zig");
+const whenwords = @import("whenwords");
 
 pub fn main() !void {
     const allocator = std.heap.page_allocator;
